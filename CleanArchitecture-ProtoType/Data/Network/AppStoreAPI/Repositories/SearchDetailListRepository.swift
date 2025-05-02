@@ -20,9 +20,9 @@ class SearchDetailListRepository: SearchDetailListInterface {
             .sink(receiveCompletion: {completion in
                 switch completion {
                 case .finished:
-                    print("finished")
+                    print("API : SearchDetailList Finished")
                 case .failure(let error):
-                    print(error)
+                    print("API Error : SearchDetailList \(error)")
                 }
             }, receiveValue: {searchDetailList in
                 completion(searchDetailList)

@@ -7,9 +7,42 @@
 
 import Foundation
 import RealmSwift
+import Combine
+
+//static func searchDetailList() -> AnyPublisher<[SearchDetailListEntity], Error> {
+//    return AF.request(API.searchDetailList.url)
+//        .publishDecodable(type: [SearchDetailListEntity].self)
+//        .value()
+//        .mapError{(resultError: AFError) in
+//            return resultError as Error
+//        }
+//        .eraseToAnyPublisher()
+//}
 
 class SearchListDatabase {
     let realmDatabase = try! Realm()
+    
+    func insertDataTest() -> AnyPublisher<[SearchListEntity], Error> {
+        return Future<[SearchListEntity], Error> { completion in
+                do {
+                    try! realmDatabase.write {
+                        let query = SearchListEntityMapping(name: UUID().uuidString, searchKeyWord: "테스트 키워드")
+                        
+                        realmDatabase.add(query)
+                        realmDatabase.add(query, update: .modified)
+                    }
+
+                    let realmResults = realm.objects(SearchListEntityMapping.self)
+                    let entities = realmResults.map { $0.toEntity() }
+                    completion(.success(Array(entities)))
+
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
     
     func insertData(entity: SearchListEntity) {
         try! realmDatabase.write {
