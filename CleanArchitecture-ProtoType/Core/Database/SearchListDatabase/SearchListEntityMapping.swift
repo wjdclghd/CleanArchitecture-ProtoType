@@ -23,7 +23,7 @@ class SearchListEntityMapping: Object {
 
 extension SearchListEntityMapping {
     func toEntity() -> SearchListEntity {
-        SearchListEntity(searchKeyWord: searchKeyword)
+        SearchListEntity(searchKeyword: searchKeyword)
     }
     
     convenience init(entity: SearchListEntity, key: String = "SearchDatabase : \(UUID().uuidString)", timestamp: Date = Date()) {
