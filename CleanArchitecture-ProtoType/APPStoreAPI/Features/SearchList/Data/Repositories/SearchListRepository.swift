@@ -15,43 +15,43 @@ class SearchListRepository: SearchListRepositoryProtocol {
         self.searchListDatabase = searchListDatabase
     }
     
-    func insertInterface(keyword: String) -> AnyPublisher<Void, Error> {
-        guard !keyword.trimmingCharacters(in: .whitespaces).isEmpty else {
+    func insertInterface(searchKeyword: String) -> AnyPublisher<Void, Error> {
+        guard !searchKeyword.trimmingCharacters(in: .whitespaces).isEmpty else {
             return Fail(error: SearchError.invalidQuery).eraseToAnyPublisher()
         }
         
-        return searchListDatabase.insertDatabase(keyword: keyword)
+        return searchListDatabase.insertDatabase(searchKeyword: searchKeyword)
     }
     
-    func deleteInterface(keyword: String) -> AnyPublisher<Void, Error> {
-        guard !keyword.trimmingCharacters(in: .whitespaces).isEmpty else {
+    func deleteInterface(searchKeyword: String) -> AnyPublisher<Void, Error> {
+        guard !searchKeyword.trimmingCharacters(in: .whitespaces).isEmpty else {
             return Fail(error: SearchError.invalidQuery).eraseToAnyPublisher()
         }
         
-        return searchListDatabase.deleteDatabase(keyword: keyword)
+        return searchListDatabase.deleteDatabase(searchKeyword: searchKeyword)
     }
     
     func deleteAllInterface() -> AnyPublisher<Void, Error> {
         searchListDatabase.deleteAllDatabase()
     }
     
-    func selectInterface(keyword: String) -> AnyPublisher<[SearchListEntity], Error> {
-        guard !keyword.trimmingCharacters(in: .whitespaces).isEmpty else {
+    func selectInterface(searchKeyword: String) -> AnyPublisher<[SearchListEntity], Error> {
+        guard !searchKeyword.trimmingCharacters(in: .whitespaces).isEmpty else {
             return Fail(error: SearchError.invalidQuery).eraseToAnyPublisher()
         }
         
-        return searchListDatabase.selectDatabase(keyword: keyword)
+        return searchListDatabase.selectDatabase(searchKeyword: searchKeyword)
     }
     
     func selectAllInterface() -> AnyPublisher<[SearchListEntity], Error> {
         searchListDatabase.selectAllDatabase()
     }
     
-    func updateInterface(keyword: String) -> AnyPublisher<[SearchListEntity], Error> {
-        guard !keyword.trimmingCharacters(in: .whitespaces).isEmpty else {
+    func updateInterface(searchKeyword: String) -> AnyPublisher<[SearchListEntity], Error> {
+        guard !searchKeyword.trimmingCharacters(in: .whitespaces).isEmpty else {
             return Fail(error: SearchError.invalidQuery).eraseToAnyPublisher()
         }
         
-        return searchListDatabase.updateDatabase(keyword: keyword)
+        return searchListDatabase.updateDatabase(searchKeyword: searchKeyword)
     }
 }

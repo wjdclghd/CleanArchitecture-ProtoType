@@ -15,7 +15,7 @@ final class SearchListViewModel: ObservableObject,
     
     @Published private(set) var searchList: [SearchListEntity] = []
     @Published private(set) var isLoading: Bool = false
-    @Published var selectedKeyword: String? = nil
+    @Published var selectedSearchKeyword: String? = nil
     
     var searchListPublisher: Published<[SearchListEntity]>.Publisher { $searchList }
     var isLoadingPublisher: Published<Bool>.Publisher { $isLoading }
@@ -29,7 +29,6 @@ final class SearchListViewModel: ObservableObject,
     init(useCase: SearchListUseCaseProtocol) {
         self.useCase = useCase
         
-        // searchQuery 값이 변경될 때 필터링
         $searchQuery
             .debounce(for: .milliseconds(200), scheduler: RunLoop.main)
             .removeDuplicates()
@@ -49,7 +48,7 @@ final class SearchListViewModel: ObservableObject,
         }
         
         isLoading = true
-        useCase.select(keyword: searchQuery)
+        useCase.select(searchKeyword: searchQuery)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 self?.isLoading = false
@@ -62,14 +61,14 @@ final class SearchListViewModel: ObservableObject,
             .store(in: &cancellables)
     }
     
-    func saveKeyword(_ keyword: String) {
-        useCase.insert(keyword: keyword)
+    func saveKeyword(_ searchKeyword: String) {
+        useCase.insert(searchKeyword: searchKeyword)
             .sink(receiveCompletion: { _ in }, receiveValue: { })
             .store(in: &cancellables)
     }
     
-    func deleteKeyword(_ keyword: String) {
-        useCase.delete(keyword: keyword)
+    func deleteKeyword(_ searchKeyword: String) {
+        useCase.delete(searchKeyword: searchKeyword)
             .sink(receiveCompletion: { _ in }, receiveValue: { })
             .store(in: &cancellables)
     }
@@ -94,8 +93,8 @@ final class SearchListViewModel: ObservableObject,
             .store(in: &cancellables)
     }
     
-    func touchKeyword(_ keyword: String) {
-        useCase.update(keyword: keyword)
+    func touchKeyword(_ searchKeyword: String) {
+        useCase.update(searchKeyword: searchKeyword)
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] updatedList in
                 self?.searchList = updatedList
             })

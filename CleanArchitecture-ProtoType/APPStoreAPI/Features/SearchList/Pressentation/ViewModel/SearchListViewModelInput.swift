@@ -11,9 +11,9 @@ protocol SearchListViewModelInput {
     var searchQuery: String { get set }
     
     func filterList()
-    func saveKeyword(_ keyword: String)
-    func deleteKeyword(_ keyword: String)
+    func saveKeyword(_ searchKeyword: String)
+    func deleteKeyword(_ searchKeyword: String)
     func clearAllList()
     func loadAllList()
-    func touchKeyword(_ keyword: String)
+    func touchKeyword(_ searchKeyword: String)
 }

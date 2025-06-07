@@ -9,15 +9,15 @@ import Foundation
 import Combine
 
 protocol SearchListRepositoryProtocol {
-    func insertInterface(keyword: String) -> AnyPublisher<Void, Error>
+    func insertInterface(searchKeyword: String) -> AnyPublisher<Void, Error>
     
-    func deleteInterface(keyword: String) -> AnyPublisher<Void, Error>
+    func deleteInterface(searchKeyword: String) -> AnyPublisher<Void, Error>
     
     func deleteAllInterface() -> AnyPublisher<Void, Error>
     
-    func selectInterface(keyword: String) -> AnyPublisher<[SearchListEntity], Error>
+    func selectInterface(searchKeyword: String) -> AnyPublisher<[SearchListEntity], Error>
     
     func selectAllInterface() -> AnyPublisher<[SearchListEntity], Error>
     
-    func updateInterface(keyword: String) -> AnyPublisher<[SearchListEntity], Error>
+    func updateInterface(searchKeyword: String) -> AnyPublisher<[SearchListEntity], Error>
 }
