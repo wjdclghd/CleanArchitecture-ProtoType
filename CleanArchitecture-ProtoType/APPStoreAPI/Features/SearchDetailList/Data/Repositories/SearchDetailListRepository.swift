@@ -15,8 +15,8 @@ class SearchDetailListRepository: SearchDetailListRepositoryProtocol {
         self.networkServiceProtocol = networkServiceProtocol
     }
     
-    func searchDetaiListRepository(keyword: String) -> AnyPublisher<[SearchDetailEntity], Error> {
-        networkServiceProtocol.request(.searchDetailList(keyword: keyword), type: SearchDetailListEntity.self)
+    func searchDetaiListRepository(searchKeyword: String) -> AnyPublisher<[SearchDetailEntity], Error> {
+        networkServiceProtocol.request(.searchDetailList(searchKeyword: searchKeyword), type: SearchDetailListEntity.self)
             .map {
                 $0.results
             }

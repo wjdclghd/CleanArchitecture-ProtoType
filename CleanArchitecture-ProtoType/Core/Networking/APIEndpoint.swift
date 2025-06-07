@@ -13,7 +13,7 @@ enum HTTPMethodType: String {
 }
 
 enum APIEndpoint {
-    case searchDetailList(keyword: String)
+    case searchDetailList(searchKeyword: String)
     
     var baseURL: String {
         return "https://itunes.apple.com"

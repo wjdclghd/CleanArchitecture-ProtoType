@@ -8,33 +8,25 @@
 import Foundation
 import Combine
 
-final class SearchDetailListViewModel: ObservableObject {
-    @Published var searchQuery: String = ""
-    @Published private(set) var searchResults: [SearchDetailEntity] = []
+class SearchDetailListViewModel: ObservableObject {
+    @Published private(set) var searchDetailList: [SearchDetailEntity] = []
     @Published private(set) var isLoading: Bool = false
 
-    private let useCase: SearchDetailListUseCaseProtocol
-    private var cancellables = Set<AnyCancellable>()
+    let searchKeyword: String
+    let useCase: SearchDetailListUseCaseProtocol
+    var cancellables = Set<AnyCancellable>()
 
-    init(useCase: SearchDetailListUseCaseProtocol) {
+    init(useCase: SearchDetailListUseCaseProtocol, searchKeyword: String) {
         self.useCase = useCase
-        bind()
+        self.searchKeyword = searchKeyword
+        
+        fetchSearchDetailList()
     }
 
-    private func bind() {
-        $searchQuery
-            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-            .removeDuplicates()
-            .sink { [weak self] keyword in
-                guard let self = self, !keyword.isEmpty else { return }
-                self.fetchResults(for: keyword)
-            }
-            .store(in: &cancellables)
-    }
-
-    func fetchResults(for keyword: String) {
+    func fetchSearchDetailList() {
         isLoading = true
-        useCase.searchDetailListUseCase(keyword: keyword)
+        
+        useCase.searchDetailListUseCase(searchKeyword: searchKeyword)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoading = false
@@ -42,7 +34,7 @@ final class SearchDetailListViewModel: ObservableObject {
                     print("검색 실패: \(error)")
                 }
             }, receiveValue: { [weak self] results in
-                self?.searchResults = results
+                self?.searchDetailList = results
             })
             .store(in: &cancellables)
     }

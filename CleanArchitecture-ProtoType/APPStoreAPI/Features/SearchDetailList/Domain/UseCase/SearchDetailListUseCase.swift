@@ -15,7 +15,7 @@ class SearchDetailListUseCase: SearchDetailListUseCaseProtocol {
         self.repository = repository
     }
     
-    func searchDetailListUseCase(keyword: String) -> AnyPublisher<[SearchDetailEntity], Error> {
-        repository.searchDetaiListRepository(keyword: keyword)
+    func searchDetailListUseCase(searchKeyword: String) -> AnyPublisher<[SearchDetailEntity], Error> {
+        repository.searchDetaiListRepository(searchKeyword: searchKeyword)
     }
 }

@@ -27,13 +27,13 @@ final class NavigationCoordinator: NavigationCoordinatorProtocol {
         path.removeLast(path.count)
     }
     
-    @ViewBuilder
     func build(route: AppRoute) -> AnyView {
         switch route {
         case .searchDetailList(let searchKeyword):
             let repository: SearchDetailListRepositoryProtocol = SearchDetailListRepository()
             let useCase: SearchDetailListUseCaseProtocol = SearchDetailListUseCase(repository: repository)
-            let viewModel = SearchDetailListViewModel(useCase: useCase, initSearchKeyword: searchKeyword)
+            let viewModel = SearchDetailListViewModel(useCase: useCase, searchKeyword: searchKeyword)
+            
             return AnyView(SearchDetailListView(viewModel: viewModel))
         }
     }
