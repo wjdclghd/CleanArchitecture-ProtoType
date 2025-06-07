@@ -8,25 +8,21 @@
 import Foundation
 import Combine
 
-class SearchDetailListRepository: SearchDetailListInterface {
-    init () {
-        
+class SearchDetailListRepository: SearchDetailListRepositoryProtocol {
+    let networkServiceProtocol: NetworkServiceProtocol
+    
+    init (networkServiceProtocol: NetworkServiceProtocol = NetworkService()) {
+        self.networkServiceProtocol = networkServiceProtocol
     }
     
-    var subscriptions = Set<AnyCancellable>()
-    
-    func searchDetailListInterface(completion: @escaping ([SearchDetailListEntity]) -> Void) {
-        APIService.searchDetailList()
-            .sink(receiveCompletion: {completion in
-                switch completion {
-                case .finished:
-                    print("API : SearchDetailList Finished")
-                case .failure(let error):
-                    print("API Error : SearchDetailList \(error)")
-                }
-            }, receiveValue: {searchDetailList in
-                completion(searchDetailList)
-            })
-            .store(in: &subscriptions)
+    func searchDetaiListRepository(keyword: String) -> AnyPublisher<[SearchDetailEntity], Error> {
+        networkServiceProtocol.request(.searchDetailList(keyword: keyword), type: SearchDetailListEntity.self)
+            .map {
+                $0.results
+            }
+            .mapError {
+                $0 as Error
+            }
+            .eraseToAnyPublisher()
     }
 }
