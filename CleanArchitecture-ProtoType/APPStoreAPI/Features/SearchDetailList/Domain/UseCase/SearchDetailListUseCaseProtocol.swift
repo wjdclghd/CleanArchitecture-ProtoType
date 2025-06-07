@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 protocol SearchDetailListUseCaseProtocol{
-    func searchDetailListUseCase(keyword: String) -> AnyPublisher<[SearchDetailEntity], Error>
+    func searchDetailListUseCase(searchKeyword: String) -> AnyPublisher<[SearchDetailEntity], Error>
 }

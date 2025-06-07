@@ -10,5 +10,5 @@ import Foundation
 import Combine
 
 protocol SearchDetailListRepositoryProtocol {
-    func searchDetaiListRepository(keyword: String) -> AnyPublisher<[SearchDetailEntity], Error>
+    func searchDetaiListRepository(searchKeyword: String) -> AnyPublisher<[SearchDetailEntity], Error>
 }
