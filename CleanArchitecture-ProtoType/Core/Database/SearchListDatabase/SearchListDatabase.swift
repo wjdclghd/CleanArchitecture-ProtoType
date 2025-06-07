@@ -30,14 +30,14 @@ class SearchListDatabase {
         self.init(realmDatabase: try Realm(configuration: config))
     }
     
-    func insertDatabase(keyword: String) -> AnyPublisher<Void, Error> {
+    func insertDatabase(searchKeyword: String) -> AnyPublisher<Void, Error> {
         Deferred {
             Future { completion in
                 do {
                     try self.realmDatabase.write {
                         let entity = SearchListEntityMapping(
                             key: "SearchDatabase_\(UUID().uuidString)",
-                            searchKeyWord: keyword,
+                            searchKeyWord: searchKeyword,
                             timestamp: Date()
                         )
                         
@@ -54,13 +54,13 @@ class SearchListDatabase {
         .eraseToAnyPublisher()
     }
     
-    func deleteDatabase(keyword: String) -> AnyPublisher<Void, Error> {
+    func deleteDatabase(searchKeyword: String) -> AnyPublisher<Void, Error> {
         Deferred {
             Future { completion in
                 do {
                     try self.realmDatabase.write {
                         let entity = self.realmDatabase.objects(SearchListEntityMapping.self)
-                            .filter("searchKeyWord == %@", keyword)
+                            .filter("searchKeyWord == %@", searchKeyword)
                         
                         self.realmDatabase.delete(entity)
                     }
@@ -93,11 +93,11 @@ class SearchListDatabase {
         .eraseToAnyPublisher()
     }
     
-    func selectDatabase(keyword: String) -> AnyPublisher<[SearchListEntity], Error> {
+    func selectDatabase(searchKeyword: String) -> AnyPublisher<[SearchListEntity], Error> {
         Just(())
             .tryMap { _ in
                 let entitys = self.realmDatabase.objects(SearchListEntityMapping.self)
-                    .filter("searchKeyWord CONTAINS[c] %@", keyword)
+                    .filter("searchKeyWord CONTAINS[c] %@", searchKeyword)
                     .sorted(byKeyPath: "timestamp", ascending: false)
                 return Array(entitys).map { $0.toEntity() }
             }
@@ -118,20 +118,20 @@ class SearchListDatabase {
             .eraseToAnyPublisher()
     }
     
-    func updateDatabase(keyword: String) -> AnyPublisher<[SearchListEntity], Error> {
+    func updateDatabase(searchKeyword: String) -> AnyPublisher<[SearchListEntity], Error> {
         Deferred {
             Future { completion in
                 do {
                     try self.realmDatabase.write {
                         let entitys = self.realmDatabase.objects(SearchListEntityMapping.self)
-                            .filter("searchKeyWord == %@", keyword)
+                            .filter("searchKeyWord == %@", searchKeyword)
                         
                         if let entity = entitys.first {
                             entity.timestamp = Date()
                         } else {
                             let newEntity = SearchListEntityMapping(
                                 key: "SearchDatabase_\(UUID().uuidString)",
-                                searchKeyWord: keyword,
+                                searchKeyWord: searchKeyword,
                                 timestamp: Date()
                             )
                             

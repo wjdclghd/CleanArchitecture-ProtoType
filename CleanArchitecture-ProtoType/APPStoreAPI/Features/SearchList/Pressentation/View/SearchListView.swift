@@ -10,66 +10,31 @@ import SwiftUI
 
 struct SearchListView: View {
     @ObservedObject var viewModel: SearchListViewModel
-    
+    @EnvironmentObject var coordinator: NavigationCoordinator
+
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 16) {
-                TextField("검색어를 입력하세요", text: $viewModel.searchQuery)
-                    .padding(.horizontal)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .disableAutocorrection(true)
-                    .onSubmit {
-                        let trimmed = viewModel.searchQuery.trimmingCharacters(in: .whitespaces)
-                        guard !trimmed.isEmpty else { return }
-                        
-                        viewModel.saveKeyword(trimmed)
-                        viewModel.touchKeyword(trimmed)
-                        viewModel.searchQuery = ""
-                    }
-
-                if viewModel.isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
+        VStack {
+            TextField("검색어를 입력하세요", text: $viewModel.searchQuery)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .onSubmit {
+                    let trimmed = viewModel.searchQuery.trimmingCharacters(in: .whitespaces)
+                    guard !trimmed.isEmpty else { return }
+                    
+                    viewModel.saveKeyword(trimmed)
+                    viewModel.touchKeyword(trimmed)
+                    
+                    coordinator.push(.searchDetailList(searchKeyword: trimmed))
                 }
 
-                List {
-                    ForEach(viewModel.searchList, id: \.searchKeyWord) { item in
-                        NavigationLink(
-                            destination: {
-                                // ✅ 목적지: SearchDetailListView 생성
-                                let searchDetailListRepository = SearchDetailListRepository()
-                                let searchDetailListUseCase = SearchDetailListUseCase(repository: searchDetailListUseCase)
-                                let searchDetailListViewModel = SearchDetailListViewModel(useCase: searchDetailListUseCase)
-                                SearchDetailListViewModel.searchDetailList(for: item.searchKeyWord) // 즉시 호출
-                                
-                                SearchDetailListView(viewModel: SearchDetailListViewModel)
-                            }
-                        ) {
-                            HStack {
-                                Text(item.searchKeyWord)
-                                Spacer()
-                                Button {
-                                    viewModel.deleteKeyword(item.searchKeyWord)
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.gray)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-                    }
+            List(viewModel.searchList, id: \.searchKeyWord) { item in
+                Button {
+                    viewModel.touchKeyword(item.searchKeyWord)
+                    coordinator.push(.searchDetailList(keyword: item.searchKeyWord))
+                } label: {
+                    Text(item.searchKeyWord)
                 }
-                .listStyle(.plain)
-                
-                Button(action: {
-                    viewModel.clearAllList()
-                }) {
-                    Text("전체 삭제")
-                        .foregroundColor(.red)
-                }
-                .padding(.bottom)
             }
-            .navigationTitle("검색 기록")
         }
+        .navigationTitle("검색 기록")
     }
 }

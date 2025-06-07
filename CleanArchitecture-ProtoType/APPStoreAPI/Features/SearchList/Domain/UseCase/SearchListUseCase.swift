@@ -15,27 +15,27 @@ class SearchListUseCase: SearchListUseCaseProtocol {
         self.repository = repository
     }
     
-    func insert(keyword: String) -> AnyPublisher<Void, Error> {
-        repository.insertInterface(keyword: keyword)
+    func insert(searchKeyword: String) -> AnyPublisher<Void, Error> {
+        repository.insertInterface(searchKeyword: searchKeyword)
     }
     
-    func delete(keyword: String) -> AnyPublisher<Void, Error> {
-        repository.deleteInterface(keyword: keyword)
+    func delete(searchKeyword: String) -> AnyPublisher<Void, Error> {
+        repository.deleteInterface(searchKeyword: searchKeyword)
     }
     
     func deleteAll() -> AnyPublisher<Void, Error> {
         repository.deleteAllInterface()
     }
     
-    func select(keyword: String) -> AnyPublisher<[SearchListEntity], Error> {
-        repository.selectInterface(keyword: keyword)
+    func select(searchKeyword: String) -> AnyPublisher<[SearchListEntity], Error> {
+        repository.selectInterface(searchKeyword: searchKeyword)
     }
     
     func selectAll() -> AnyPublisher<[SearchListEntity], Error> {
         repository.selectAllInterface()
     }
     
-    func update(keyword: String) -> AnyPublisher<[SearchListEntity], Error> {
-        repository.updateInterface(keyword: keyword)
+    func update(searchKeyword: String) -> AnyPublisher<[SearchListEntity], Error> {
+        repository.updateInterface(searchKeyword: searchKeyword)
     }
 }
