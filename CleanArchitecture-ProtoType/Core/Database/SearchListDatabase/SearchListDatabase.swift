@@ -37,7 +37,7 @@ class SearchListDatabase {
                     try self.realmDatabase.write {
                         let entity = SearchListEntityMapping(
                             key: "SearchDatabase_\(UUID().uuidString)",
-                            searchKeyWord: searchKeyword,
+                            searchKeyword: searchKeyword,
                             timestamp: Date()
                         )
                         
@@ -131,7 +131,7 @@ class SearchListDatabase {
                         } else {
                             let newEntity = SearchListEntityMapping(
                                 key: "SearchDatabase_\(UUID().uuidString)",
-                                searchKeyWord: searchKeyword,
+                                searchKeyword: searchKeyword,
                                 timestamp: Date()
                             )
                             

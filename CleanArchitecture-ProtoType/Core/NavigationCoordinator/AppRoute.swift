@@ -9,5 +9,5 @@ import Foundation
 import SwiftUI
 
 enum AppRoute: Hashable {
-    case searchDetailList(searchKeyWord: String)
+    case searchDetailList(searchKeyword: String)
 }

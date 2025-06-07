@@ -35,9 +35,9 @@ enum APIEndpoint {
     
     var queryItems: [URLQueryItem]? {
         switch self {
-        case .searchDetailList(let keyword):
+        case .searchDetailList(let searchKeyword):
             return [
-                URLQueryItem(name: "term", value: keyword),
+                URLQueryItem(name: "term", value: searchKeyword),
                 URLQueryItem(name: "media", value: "software"),
                 URLQueryItem(name: "country", value: "KR")
             ]

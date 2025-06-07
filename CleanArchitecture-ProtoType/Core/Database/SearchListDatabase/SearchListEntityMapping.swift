@@ -10,32 +10,32 @@ import RealmSwift
 
 class SearchListEntityMapping: Object {
     @Persisted(primaryKey: true) var key: String
-    @Persisted var searchKeyWord: String
+    @Persisted var searchKeyword: String
     @Persisted var timestamp: Date
     
-    convenience init(key: String, searchKeyWord: String, timestamp: Date = Date()) {
+    convenience init(key: String, searchKeyword: String, timestamp: Date = Date()) {
         self.init()
         self.key = key
-        self.searchKeyWord = searchKeyWord
+        self.searchKeyword = searchKeyword
         self.timestamp = timestamp
     }
 }
 
 extension SearchListEntityMapping {
     func toEntity() -> SearchListEntity {
-        SearchListEntity(searchKeyWord: searchKeyWord)
+        SearchListEntity(searchKeyWord: searchKeyword)
     }
     
     convenience init(entity: SearchListEntity, key: String = "SearchDatabase : \(UUID().uuidString)", timestamp: Date = Date()) {
         self.init()
         self.key = key
-        self.searchKeyWord = entity.searchKeyWord
+        self.searchKeyword = entity.searchKeyword
         self.timestamp = timestamp
     }
 }
 
 extension SearchListEntity {
     init(mapping: SearchListEntityMapping) {
-        self.searchKeyWord = mapping.searchKeyWord
+        self.searchKeyword = mapping.searchKeyword
     }
 }
