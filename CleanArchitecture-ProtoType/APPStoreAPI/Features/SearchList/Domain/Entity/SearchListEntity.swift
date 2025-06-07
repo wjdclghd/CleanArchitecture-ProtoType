@@ -8,5 +8,5 @@
 import Foundation
 
 struct SearchListEntity: Codable {
-    let searchKeyWord: String
+    let searchKeyword: String
 }

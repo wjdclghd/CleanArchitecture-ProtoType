@@ -26,12 +26,12 @@ struct SearchListView: View {
                     coordinator.push(.searchDetailList(searchKeyword: trimmed))
                 }
 
-            List(viewModel.searchList, id: \.searchKeyWord) { item in
+            List(viewModel.searchList, id: \.searchKeyword) { item in
                 Button {
-                    viewModel.touchKeyword(item.searchKeyWord)
-                    coordinator.push(.searchDetailList(keyword: item.searchKeyWord))
+                    viewModel.touchKeyword(item.searchKeyword)
+                    coordinator.push(.searchDetailList(searchKeyword: item.searchKeyword))
                 } label: {
-                    Text(item.searchKeyWord)
+                    Text(item.searchKeyword)
                 }
             }
         }
