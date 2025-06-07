@@ -2,7 +2,7 @@
 //  SearchListViewModel.swift
 //  CleanArchitecture-ProtoType
 //
-//  Created by 201510089 on 5/6/25.
+//  Created by jch on 6/7/25.
 //
 
 import Foundation
@@ -15,6 +15,7 @@ final class SearchListViewModel: ObservableObject,
     
     @Published private(set) var searchList: [SearchListEntity] = []
     @Published private(set) var isLoading: Bool = false
+    @Published var selectedKeyword: String? = nil
     
     var searchListPublisher: Published<[SearchListEntity]>.Publisher { $searchList }
     var isLoadingPublisher: Published<Bool>.Publisher { $isLoading }
