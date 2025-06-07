@@ -6,15 +6,16 @@
 //
 
 import Foundation
+import Combine
 
-class SearchDetailListUseCase {
-    let repository: SearchDetailListInterface
+class SearchDetailListUseCase: SearchDetailListUseCaseProtocol {
+    let repository: SearchDetailListRepositoryProtocol
     
-    init (repository: SearchDetailListInterface) {
+    init (repository: SearchDetailListRepositoryProtocol) {
         self.repository = repository
     }
     
-    func searchDetailList(completion: @escaping ([SearchDetailListEntity]) -> Void) {
-        repository.searchDetailListInterface(completion: completion)
+    func searchDetailListUseCase(keyword: String) -> AnyPublisher<[SearchDetailEntity], Error> {
+        repository.searchDetaiListRepository(keyword: keyword)
     }
 }
